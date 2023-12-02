@@ -29,5 +29,5 @@ As we navigate through this presentation, we'll unravel intricate temporal trend
 
 
 ![Image 4](./plots/time_series.png)
-*For a dynamic perspective, our time series plot unfurls the temporal patterns in sales. *
+*For a dynamic perspective, our time series plot unfurls the temporal patterns in sales.*
 
