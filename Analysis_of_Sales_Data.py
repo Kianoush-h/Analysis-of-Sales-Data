@@ -270,6 +270,33 @@ plt.title('Correlation Matrix')
 plt.show()
 
 
+# =============================================================================
+# PART 7
+# =============================================================================
+
+
+
+# Example: Time series plot of parking tickets count by date
+plt.figure(figsize=(16, 8))
+raw_data['ORDERDATE'].value_counts().sort_index().plot(kind='line')
+plt.title('SALES Over Time')
+plt.xlabel('DATE')
+plt.ylabel('SALES')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
