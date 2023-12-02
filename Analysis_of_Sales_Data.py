@@ -221,10 +221,36 @@ for index, value in enumerate(filtered_data.groupby('PRODUCTLINE')['SALES'].sum(
 plt.show()
 
 
+# =============================================================================
+# PART 5
+# =============================================================================
 
+# Calculate the ticket counts for each combined location
+if len(set(raw_data['STATUS'])) < 10:
+    top_x = len(set(raw_data['STATUS']))
+else:
+    top_x = 10
+status = raw_data['STATUS'].value_counts().nlargest(top_x)
 
+# Use a color palette from seaborn
+colors = sns.color_palette("pastel")
 
+# Explode and Shadow
+explode = (0.1,) + tuple(0 for i in range( top_x-1))  # Highlight the first slice
+shadow = True
 
+# Plotting a pie chart for the top 10 
+plt.figure(figsize=(10, 10))
+plt.pie(status, labels=status.index, autopct='%1.1f%%', startangle=140, colors=colors, explode=explode, shadow=shadow)
+
+# Title and labels
+plt.title(f'Top {top_x} Status', fontsize=16)
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle
+
+# Legend
+# plt.legend(location_counts.index, title='Locations', loc='upper right')
+
+plt.show()
 
 
 
