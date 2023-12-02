@@ -254,9 +254,20 @@ plt.show()
 
 
 
+# =============================================================================
+# PART 6
+# =============================================================================
 
 
 
+# Calculate correlation matrix
+correlation_matrix = raw_data.corr()
+
+# Plot heatmap
+plt.figure(figsize=(12, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix')
+plt.show()
 
 
 
