@@ -4,7 +4,7 @@ Sample Sales Data, Order Info, Sales, Customer, Shipping, etc., Used for Segment
 
 ## Screenshots
 
-![Image 1]('./correlation.png')
+![Image 1](./plots/correlation.png)
 *Caption for Image 1*
 
 ![Image 2](./plots/sales_and_quantity_orders_over_months.png "image1")
