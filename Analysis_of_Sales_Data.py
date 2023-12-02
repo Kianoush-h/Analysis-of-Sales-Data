@@ -58,36 +58,59 @@ raw_data['day_of_week'] = raw_data['ORDERDATE'].dt.dayofweek
 # PART 1 
 # =============================================================================
 
-# Map month numerical values to month names and sort them
+
+# Graph 1
 month_name_mapping = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'}
 raw_data['month_name'] = raw_data['MONTH_ID'].map(month_name_mapping)
-
-# Sort the months
 months_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 raw_data['month_name'] = pd.Categorical(raw_data['month_name'], categories=months_order, ordered=True)
 
 # Use a color palette from seaborn
 sns.set_palette("viridis")
 
+# Create the first subplot (top)
+plt.figure(figsize=(12, 12))
+plt.subplot(2, 1, 1)
+
 # Line plot for Temporal Trends by Months with sorted month names
-plt.figure(figsize=(12, 6))
+sns.lineplot(data=raw_data.groupby('month_name')['SALES'].sum().sort_index(), marker='o', linestyle='-')
+
+# Labels and titles for the first subplot
+plt.title('SALES Over the Months', fontsize=16)
+plt.xlabel('Month', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
+plt.grid(True)
+
+# Data labels for the first subplot
+for index, value in enumerate(raw_data.groupby('month_name')['SALES'].sum().sort_index()):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom')
+
+
+# Graph 2
+# Use a color palette from seaborn
+sns.set_palette("viridis")
+
+# Create the second subplot (bottom)
+plt.subplot(2, 1, 2)
+
+# Line plot for Temporal Trends by Months with sorted month names
 sns.lineplot(data=raw_data.groupby('month_name')['QUANTITYORDERED'].sum().sort_index(), marker='o', linestyle='-')
 
-# Labels and titles
+# Labels and titles for the second subplot
 plt.title('QUANTITY ORDERED Over the Months', fontsize=16)
 plt.xlabel('Month', fontsize=14)
 plt.ylabel('QUANTITY ORDERED', fontsize=14)
+plt.grid(True)
 
-# Grid lines
-sns.set_style("whitegrid")
-
-# Data labels
+# Data labels for the second subplot
 for index, value in enumerate(raw_data.groupby('month_name')['QUANTITYORDERED'].sum().sort_index()):
     plt.text(index, value + 1, str(value), ha='center', va='bottom')
 
-plt.grid(True)
-plt.show()
+# Adjust layout to prevent clipping of titles and labels
+plt.tight_layout()
 
+# Show the plot
+plt.show()
 
 
 
@@ -110,30 +133,92 @@ sns.set_palette("pastel")
 # Bar plot for Temporal Trends by Day of the Week with sorted day names
 plt.figure(figsize=(12, 6))
 sns.set_style("whitegrid")  # Add grid lines
-raw_data.groupby('day_name')['QUANTITYORDERED'].sum().sort_index().plot(kind='bar')
+raw_data.groupby('day_name')['SALES'].sum().sort_index().plot(kind='bar')
 
 # Labels and titles
-plt.title('QUANTITY ORDERED Over the Days of the Week', fontsize=16)
+plt.title('SALES Over the Days of the Week', fontsize=16)
 plt.xlabel('Day of the Week', fontsize=14)
-plt.ylabel('QUANTITY ORDERED', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
 
 # Legend
-plt.legend(['QUANTITY ORDERED'], loc='upper right')
+plt.legend(['SALES'], loc='upper right')
 
 # Data labels
-for index, value in enumerate(raw_data.groupby('day_name')['QUANTITYORDERED'].sum().sort_index()):
+for index, value in enumerate(raw_data.groupby('day_name')['SALES'].sum().sort_index()):
     plt.text(index, value + 1, str(value), ha='center', va='bottom')
 
 plt.grid(True)
 plt.show()
 
 
+# =============================================================================
+# PART 3
+# =============================================================================
 
 
+# Adjust the number of top descriptions to show (e.g., top 10)
+top_n = 10
+top_descriptions = raw_data['PRODUCTCODE'].value_counts().nlargest(top_n).index
 
+# Use a color palette from seaborn
+sns.set_palette("pastel")
 
+plt.figure(figsize=(12, 6))
+sns.set_style("whitegrid")  # Add grid lines
 
+# Filter data for top PRODUCTCODE
+filtered_data = raw_data[raw_data['PRODUCTCODE'].isin(top_descriptions)]
 
+# Bar plot for sales by Top PRODUCTCODE
+filtered_data.groupby('PRODUCTCODE')['SALES'].sum().plot(kind='bar')
+
+# Labels and titles
+plt.title('SALES by Top PRODUCTCODE', fontsize=16)
+plt.xlabel('PRODUCTCODE', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
+
+# Rotate x-axis labels for better readability
+plt.xticks(rotation=45, ha='right')
+
+# Data labels
+for index, value in enumerate(filtered_data.groupby('PRODUCTCODE')['SALES'].sum()):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom')
+
+plt.show()
+
+# =============================================================================
+# PART 4
+# =============================================================================
+
+# Adjust the number of top descriptions to show (e.g., top 10)
+top_n = 20
+top_descriptions = raw_data['PRODUCTLINE'].value_counts().nlargest(top_n).index
+
+# Use a color palette from seaborn
+sns.set_palette("pastel")
+
+plt.figure(figsize=(12, 6))
+sns.set_style("whitegrid")  # Add grid lines
+
+# Filter data for top PRODUCTCODE
+filtered_data = raw_data[raw_data['PRODUCTLINE'].isin(top_descriptions)]
+
+# Bar plot for sales by Top PRODUCTCODE
+filtered_data.groupby('PRODUCTLINE')['SALES'].sum().plot(kind='bar')
+
+# Labels and titles
+plt.title('SALES by Top PRODUCTLINE', fontsize=16)
+plt.xlabel('PRODUCTLINE', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
+
+# Rotate x-axis labels for better readability
+plt.xticks(rotation=45, ha='right')
+
+# Data labels
+for index, value in enumerate(filtered_data.groupby('PRODUCTLINE')['SALES'].sum()):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom')
+
+plt.show()
 
 
 
