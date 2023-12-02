@@ -10,24 +10,79 @@ Email: haratiank2@gmail.com
 
 """
 
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# Load all CSV files into a list of DataFrames
+file_path = 'data/sales_data_sample.csv'
+
+# encoding = "utf-8"
+encoding = "ISO-8859-1"
+
+raw_data = pd.read_csv(file_path, encoding = encoding)
+
+print(raw_data.shape)
+
+# Display the first few rows
+head = raw_data.head(5)
+
+# Display the last few rows
+raw_data.tail(5)
+
+# Basic statistics of numerical columns
+temp = raw_data.describe()
+
+categorical_stats = raw_data.describe(include=['object'])
+
+
+raw_data.info()
+
+# raw_data.dropna(inplace=True)
+
+raw_data['ORDERDATE'] = pd.to_datetime(raw_data['ORDERDATE'], infer_datetime_format=True)
 
 
 
+# raw_data['year'] = raw_data['date_of_infraction'].dt.year
+# raw_data['month'] = raw_data['date_of_infraction'].dt.month
+raw_data['day_of_week'] = raw_data['ORDERDATE'].dt.dayofweek
 
+# =============================================================================
+# Data Visualization
+# =============================================================================
 
+# Map month numerical values to month names and sort them
+month_name_mapping = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'}
+raw_data['month_name'] = raw_data['MONTH_ID'].map(month_name_mapping)
 
+# Sort the months
+months_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+raw_data['month_name'] = pd.Categorical(raw_data['month_name'], categories=months_order, ordered=True)
 
+# Use a color palette from seaborn
+sns.set_palette("viridis")
 
+# Line plot for Temporal Trends by Months with sorted month names
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=raw_data.groupby('month_name')['QUANTITYORDERED'].sum().sort_index(), marker='o', linestyle='-')
 
+# Labels and titles
+plt.title('QUANTITY ORDERED Over the Months', fontsize=16)
+plt.xlabel('Month', fontsize=14)
+plt.ylabel('QUANTITY ORDERED', fontsize=14)
 
+# Grid lines
+sns.set_style("whitegrid")
 
+# Data labels
+for index, value in enumerate(raw_data.groupby('month_name')['QUANTITYORDERED'].sum().sort_index()):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom')
 
-
-
-
-
-
-
+plt.grid(True)
+plt.show()
 
 
 
