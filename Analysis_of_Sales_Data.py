@@ -54,6 +54,10 @@ raw_data['day_of_week'] = raw_data['ORDERDATE'].dt.dayofweek
 # Data Visualization
 # =============================================================================
 
+# =============================================================================
+# PART 1 
+# =============================================================================
+
 # Map month numerical values to month names and sort them
 month_name_mapping = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'}
 raw_data['month_name'] = raw_data['MONTH_ID'].map(month_name_mapping)
@@ -87,10 +91,41 @@ plt.show()
 
 
 
+# =============================================================================
+# PART 2 
+# =============================================================================
 
 
+# Map day_of_week numerical values to day names and sort them
+day_name_mapping = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+raw_data['day_name'] = raw_data['day_of_week'].map(day_name_mapping)
 
+# Sort the days of the week
+days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+raw_data['day_name'] = pd.Categorical(raw_data['day_name'], categories=days_order, ordered=True)
 
+# Use a color palette from seaborn
+sns.set_palette("pastel")
+
+# Bar plot for Temporal Trends by Day of the Week with sorted day names
+plt.figure(figsize=(12, 6))
+sns.set_style("whitegrid")  # Add grid lines
+raw_data.groupby('day_name')['QUANTITYORDERED'].sum().sort_index().plot(kind='bar')
+
+# Labels and titles
+plt.title('QUANTITY ORDERED Over the Days of the Week', fontsize=16)
+plt.xlabel('Day of the Week', fontsize=14)
+plt.ylabel('QUANTITY ORDERED', fontsize=14)
+
+# Legend
+plt.legend(['QUANTITY ORDERED'], loc='upper right')
+
+# Data labels
+for index, value in enumerate(raw_data.groupby('day_name')['QUANTITYORDERED'].sum().sort_index()):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom')
+
+plt.grid(True)
+plt.show()
 
 
 
