@@ -53,6 +53,9 @@ raw_data['day_of_week'] = raw_data['ORDERDATE'].dt.dayofweek
 # =============================================================================
 # Data Visualization
 # =============================================================================
+raw_data.isnull().sum()/len(raw_data)*100
+
+
 
 # =============================================================================
 # PART 1 
@@ -111,6 +114,39 @@ plt.tight_layout()
 
 # Show the plot
 plt.show()
+
+
+
+
+# =============================================================================
+# PART 1-2
+# =============================================================================
+
+
+
+# Use a color palette from seaborn
+sns.set_palette("pastel")
+
+# Bar plot for Temporal Trends by Day of the Week with sorted day names
+plt.figure(figsize=(12, 6))
+sns.set_style("whitegrid")  # Add grid lines
+df = raw_data.groupby('YEAR_ID')['SALES'].sum().sort_index().plot(kind='bar')
+
+# Labels and titles
+plt.title('SALES Over the Years', fontsize=16)
+plt.xlabel('Years', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
+
+# Legend
+plt.legend(['SALES'], loc='upper right')
+
+# Data labels
+for index, value in enumerate(raw_data.groupby('YEAR_ID')['SALES'].sum().sort_index()):
+    plt.text(index, value + 1, f'{value / 1e6:.2f}M', ha='center', va='bottom')
+
+plt.grid(True)
+plt.show()
+
 
 
 
