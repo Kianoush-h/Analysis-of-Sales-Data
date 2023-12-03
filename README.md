@@ -7,10 +7,15 @@ As we navigate through this presentation, we'll unravel intricate temporal trend
 
 ## Visualizition Analysis
 
+![Image 0](./plots/sales_over_years.png )
+*A bar plot focusing on the how sales fluctuate throughout the years*
+
+![Image 0](./plots/sales_by_countries.png)
+*A bar plot focusing on the sales by each countries*
 
 
 ![Image 1](./plots/sales_and_quantity_orders_over_months.png )
-*This chosen visualization method provides a smooth narrative of how sales fluctuate throughout the years*
+*This chosen visualization method provides a smooth narrative of how sales fluctuate throughout the months*
 
 ![Image 2](./plots/sales_over_days_of_week.png)
 *We turn our attention to the distribution of sales over days of the week*
