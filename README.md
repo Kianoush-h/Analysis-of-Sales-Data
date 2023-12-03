@@ -7,6 +7,10 @@ As we navigate through this presentation, we'll unravel intricate temporal trend
 
 ## Visualizition Analysis
 
+
+![Image -1](./plots/sales_over_years_by_each_country.png)
+*A bar plot focusing on the how sales fluctuate throughout the years by each country*
+
 ![Image 0](./plots/sales_over_years.png )
 *A bar plot focusing on the how sales fluctuate throughout the years*
 

@@ -149,6 +149,55 @@ plt.show()
 
 
 
+# =============================================================================
+# PART 1-3
+# =============================================================================
+
+
+# Use a color palette from seaborn
+sns.set_palette("pastel")
+
+# Bar plot for Temporal Trends by Day of the Week with sorted day names
+plt.figure(figsize=(12, 6))
+sns.set_style("whitegrid")  # Add grid lines
+df = raw_data.groupby('COUNTRY')['SALES'].sum().sort_index().plot(kind='bar')
+
+# Labels and titles
+plt.title('SALES by Countries', fontsize=16)
+plt.xlabel('Countries', fontsize=14)
+plt.ylabel('SALES', fontsize=14)
+
+# Legend
+# plt.legend(['SALES'], loc='upper right')
+
+# Data labels
+for index, value in enumerate(raw_data.groupby('COUNTRY')['SALES'].sum().sort_index()):
+    plt.text(index, value + 1, f'{value / 1e6:.2f}M', ha='center', va='bottom')
+
+plt.grid(True)
+plt.show()
+
+
+
+# =============================================================================
+# PART 1-4
+# =============================================================================
+
+unique_years = raw_data['YEAR_ID'].unique()
+temp = pd.DataFrame()
+# Create subplots for each year
+for i, year in enumerate(unique_years):
+    year_data = raw_data[raw_data['YEAR_ID'] == year]
+    year_data = year_data.groupby('COUNTRY')['SALES'].sum()
+    new_data = year_data
+    new_data = pd.DataFrame(new_data.reset_index())
+    new_data['YEAR_ID'] = year
+    temp = pd.concat([temp,new_data], ignore_index=True)
+plt.figure(figsize=(20,8))
+plt.title("Year Revenue by Country") # add title 
+a= sns.barplot(x='COUNTRY',y='SALES',data=temp,hue='YEAR_ID',errorbar=None,palette=color)
+plt.show()
+
 
 # =============================================================================
 # PART 2 
